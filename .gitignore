@@ -11,3 +11,6 @@
 **/*.rs.bk
 
 *.profraw
+
+# Protostar
+**/build
