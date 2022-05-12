@@ -24,8 +24,38 @@
 
 ## 📦 Installation
 
+## 🔧 Build
+
+```bash
+cargo build
+```
 
 ## 🔬 Usage
+
+### Verify
+
+Verify checks if a source code matches a deployed contract.
+
+```
+uraeus-verify 
+verify source code of deployed smart contracts
+
+USAGE:
+    uraeus verify <address>
+
+ARGS:
+    <address> 
+```
+
+## 📗 Logging 
+
+Change log level using `RUST_LOG` environment variable.
+
+Example:
+
+```bash
+RUST_LOG=debug cargo run -- verify 0x4bfedc224c8360eaa16969c5db2944d19c32dbabdb4fc0d93bb3ea759c7198c
+```
 
 ## 🌡️ Testing
 
