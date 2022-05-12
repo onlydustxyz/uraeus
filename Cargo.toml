@@ -1,18 +1,18 @@
 [package]
-name = "uraeus"
-authors = [ "Abdelhamid Bakhta <abdelhamid.bakhta@gmail.com>" ]
-version = "0.1.0"
-edition = "2021"
-description = "Command line utilities to check StarkNet contracts written in Cairo."
-homepage = "https://github.com/onlydustxyz/uraeus"
-repository = "https://github.com/onlydustxyz/uraeus"
-readme = "README.md"
-keywords = [ "terminal", "system", "starknet" ]
-categories = ["command-line-utilities"]
+authors      = ["Abdelhamid Bakhta <abdelhamid.bakhta@gmail.com>"]
+categories   = ["command-line-utilities"]
+description  = "Command line utilities to check StarkNet contracts written in Cairo."
+edition      = "2021"
+homepage     = "https://github.com/onlydustxyz/uraeus"
+keywords     = ["terminal", "system", "starknet"]
 license-file = "LICENSE"
+name         = "uraeus"
+readme       = "README.md"
+repository   = "https://github.com/onlydustxyz/uraeus"
+version      = "0.1.0"
 
 [dependencies]
-clap = { version = "3.1.18", features = ["derive"] }
-crossterm = "0.23.2"
+clap       = { version = "3.1.18", features = ["derive"] }
+crossterm  = "0.23.2"
 env_logger = "0.9.0"
-log = "0.4.17"
+log        = "0.4.17"
