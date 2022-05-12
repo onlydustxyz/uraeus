@@ -19,6 +19,7 @@
 
 ## Prerequisites
 
+- [Rust](https://www.rust-lang.org/)
 - [Protostar](https://github.com/software-mansion/protostar)
 - [Nile](https://github.com/OpenZeppelin/nile)
 
@@ -60,7 +61,21 @@ RUST_LOG=debug cargo run -- verify 0x4bfedc224c8360eaa16969c5db2944d19c32dbabdb4
 ## 🌡️ Testing
 
 ```bash
+cargo test --verbose
+```
 
+## 🏄‍♂️ Test coverage
+
+```bash
+sh scripts/test_coverage.sh
+```
+
+## 🛠️ Development
+
+### Install git hooks
+
+```bash
+sh scripts/install_git_hooks.sh
 ```
 
 ## 📄 License
