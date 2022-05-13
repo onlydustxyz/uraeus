@@ -13,6 +13,13 @@ pub fn subcommand() -> Command<'static> {
         )
         .arg(
             arg!(
+                -n --name <CONTRACT_NAME> "Contract name"
+            )
+            .default_value("main")
+            .required(false),
+        )
+        .arg(
+            arg!(
                 -p --projectdir <PROJECT_DIR> "Project root directory"
             )
             .default_value("")
@@ -29,8 +36,10 @@ pub fn subcommand() -> Command<'static> {
 
 pub fn run(matches: &ArgMatches) -> Result<(), &'static str> {
     debug!("Entering verify::run");
-    let contract_address = matches.value_of("address").unwrap();
-    debug!("Contract address: {}", contract_address);
+    let contract_address = String::from(matches.value_of("address").unwrap());
+    debug!("Contract address: {}", &contract_address);
+    let contract_name = String::from(matches.value_of("name").unwrap());
+    debug!("Contract name: {}", &contract_name);
     let mut project_dir = matches.value_of("projectdir").unwrap();
     let current_dir = env::current_dir().unwrap();
     let current_dir = current_dir.into_os_string().into_string().unwrap();
@@ -42,7 +51,8 @@ pub fn run(matches: &ArgMatches) -> Result<(), &'static str> {
         build_dir = format!("{}/build", project_dir);
     }
 
-    protostar::compile(String::from(project_dir), build_dir)?;
-
+    protostar::compile(String::from(project_dir), build_dir.clone())?;
+    let compiled_contract_file_path = format!("{}/{}.json", build_dir, &contract_name);
+    println!("Compiled contract path: {}", compiled_contract_file_path);
     Ok(())
 }
