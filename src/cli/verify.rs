@@ -1,7 +1,9 @@
 use crate::compiler::protostar;
+use anyhow::{Error, Result};
 use clap::{arg, ArgMatches, Command};
 use log::debug;
 use std::env;
+use std::fs;
 
 pub fn subcommand() -> Command<'static> {
     Command::new("verify")
@@ -34,7 +36,7 @@ pub fn subcommand() -> Command<'static> {
         )
 }
 
-pub fn run(matches: &ArgMatches) -> Result<(), &'static str> {
+pub fn run(matches: &ArgMatches) -> Result<()> {
     debug!("Entering verify::run");
     let contract_address = String::from(matches.value_of("address").unwrap());
     debug!("Contract address: {}", &contract_address);
@@ -53,6 +55,7 @@ pub fn run(matches: &ArgMatches) -> Result<(), &'static str> {
 
     protostar::compile(String::from(project_dir), build_dir.clone())?;
     let compiled_contract_file_path = format!("{}/{}.json", build_dir, &contract_name);
-    println!("Compiled contract path: {}", compiled_contract_file_path);
+    let _compiled_contract_json =
+        fs::read_to_string(compiled_contract_file_path).map_err(Error::msg)?;
     Ok(())
 }
