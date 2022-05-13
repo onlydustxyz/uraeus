@@ -18,3 +18,10 @@ pub fn display_success(msg: &str) {
     let _ = execute!(stdout, PrintStyledContent(message),);
     let _ = stdout.flush();
 }
+
+pub fn display_red(err_msg: &str) {
+    let mut stdout = io::stderr();
+    let message = style::style(format!("{}\n", err_msg)).with(Color::Red);
+    let _ = execute!(stdout, PrintStyledContent(message),);
+    let _ = stdout.flush();
+}

@@ -21,7 +21,7 @@
 
 - [Rust](https://www.rust-lang.org/)
 - [Protostar](https://github.com/software-mansion/protostar)
-- [Nile](https://github.com/OpenZeppelin/nile)
+- [Starknet](https://www.cairo-lang.org/docs/quickstart.html#installation)
 
 ## 📦 Installation
 
@@ -53,6 +53,14 @@ OPTIONS:
     -n, --name <CONTRACT_NAME>        Contract name [default: main]
     -p, --projectdir <PROJECT_DIR>    Project root directory [default: ]
 ```
+
+Example:
+
+```bash
+uraeus verify 0x0253db1872f5b9ad73ad17461fbbf0e987a23ea05d34c120311301bddb092dc8
+```
+
+![Example verify](examples/resources/example_verify.png)
 
 ## 📗 Logging 
 

@@ -1,8 +1,9 @@
 use crate::cli::model::CompiledFile;
+use crate::cli::term;
 use crate::compiler::protostar;
+use crate::starknet;
 use anyhow::{Error, Result};
 use clap::{arg, ArgMatches, Command};
-use log::debug;
 use std::env;
 use std::fs;
 
@@ -38,8 +39,8 @@ pub fn subcommand() -> Command<'static> {
 }
 
 pub fn run(matches: &ArgMatches) -> Result<()> {
-    debug!("Entering verify::run");
-    let _contract_address = String::from(matches.value_of("address").unwrap());
+    // Parse CLI arguments
+    let contract_address = String::from(matches.value_of("address").unwrap());
     let contract_name = String::from(matches.value_of("name").unwrap());
     let mut project_dir = matches.value_of("projectdir").unwrap();
     let current_dir = env::current_dir().unwrap();
@@ -52,10 +53,26 @@ pub fn run(matches: &ArgMatches) -> Result<()> {
         build_dir = format!("{}/build", project_dir);
     }
 
+    // Compile contracts
     protostar::compile(String::from(project_dir), build_dir.clone())?;
+
+    // Retrieve compiled contract file
     let compiled_contract_file_path = format!("{}/{}.json", build_dir, &contract_name);
+
+    // Parse compiled contract file
     let compiled_contract_json_str =
         fs::read_to_string(compiled_contract_file_path).map_err(Error::msg)?;
-    let _compiled_file: CompiledFile = serde_json::from_str(&compiled_contract_json_str)?;
+    let compiled_file: CompiledFile = serde_json::from_str(&compiled_contract_json_str)?;
+
+    // Get deployed contract code on the blockchain
+    let deployed_code = starknet::get_code(&contract_address)?;
+
+    // Compare the results
+    if compiled_file.program.data.eq(&deployed_code.bytecode) {
+        term::display_success("Source code matches deployed bytecode.");
+    } else {
+        term::display_red("Source code does not match deployed bytecode.");
+    }
+
     Ok(())
 }
