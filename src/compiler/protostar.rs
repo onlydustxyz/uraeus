@@ -11,15 +11,13 @@ pub fn compile(project_dir: String, build_dir: String) -> Result<()> {
     let mut compile_command = Command::new("protostar");
     compile_command.current_dir(project_dir);
     compile_command.arg("build");
-    println!("Compiling contracts.");
     let output = compile_command.execute_output().unwrap();
     if let Some(exit_code) = output.status.code() {
         if exit_code != 0 {
-            return Err(anyhow!("Build command failed"));
+            return Err(anyhow!("protostar build failed"));
         }
     } else {
-        return Err(anyhow!("Build command interrupted!"));
+        return Err(anyhow!("protostar build interrupted!"));
     }
-    println!("Compilation completed.");
     Ok(())
 }
