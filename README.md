@@ -38,7 +38,7 @@ cargo build
 Verify checks if a source code matches a deployed contract.
 
 ```
-uraeus-verify
+uraeus-verify 
 verify source code of deployed smart contracts
 
 USAGE:
@@ -50,6 +50,7 @@ ARGS:
 OPTIONS:
     -b, --builddir <BUILD_DIR>        Build directory [default: ]
     -h, --help                        Print help information
+    -n, --name <CONTRACT_NAME>        Contract name [default: main]
     -p, --projectdir <PROJECT_DIR>    Project root directory [default: ]
 ```
 
