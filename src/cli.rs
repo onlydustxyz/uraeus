@@ -1,5 +1,7 @@
+pub mod model;
 pub mod term;
 pub mod verify;
+
 use anyhow::Result;
 use clap::Command;
 

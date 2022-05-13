@@ -1,3 +1,4 @@
+use crate::cli::model::CompiledFile;
 use crate::compiler::protostar;
 use anyhow::{Error, Result};
 use clap::{arg, ArgMatches, Command};
@@ -38,10 +39,8 @@ pub fn subcommand() -> Command<'static> {
 
 pub fn run(matches: &ArgMatches) -> Result<()> {
     debug!("Entering verify::run");
-    let contract_address = String::from(matches.value_of("address").unwrap());
-    debug!("Contract address: {}", &contract_address);
+    let _contract_address = String::from(matches.value_of("address").unwrap());
     let contract_name = String::from(matches.value_of("name").unwrap());
-    debug!("Contract name: {}", &contract_name);
     let mut project_dir = matches.value_of("projectdir").unwrap();
     let current_dir = env::current_dir().unwrap();
     let current_dir = current_dir.into_os_string().into_string().unwrap();
@@ -55,7 +54,8 @@ pub fn run(matches: &ArgMatches) -> Result<()> {
 
     protostar::compile(String::from(project_dir), build_dir.clone())?;
     let compiled_contract_file_path = format!("{}/{}.json", build_dir, &contract_name);
-    let _compiled_contract_json =
+    let compiled_contract_json_str =
         fs::read_to_string(compiled_contract_file_path).map_err(Error::msg)?;
+    let _compiled_file: CompiledFile = serde_json::from_str(&compiled_contract_json_str)?;
     Ok(())
 }
