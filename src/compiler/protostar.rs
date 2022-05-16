@@ -3,7 +3,7 @@ use execute::Execute;
 use log::debug;
 use std::process::Command;
 
-pub fn compile(project_dir: String, build_dir: String) -> Result<()> {
+pub fn compile(project_dir: &str, build_dir: &str) -> Result<()> {
     debug!(
         "Entering compile with args\nproject_dir: {}\nbuild_dir: {}",
         project_dir, build_dir

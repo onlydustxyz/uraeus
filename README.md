@@ -25,10 +25,16 @@
 
 ## 📦 Installation
 
-## 🔧 Build
+## 🧱 From crates.io
 
 ```bash
-cargo build
+cargo install uraeus
+```
+
+## 🔧 From source
+
+```bash
+cargo install --path .
 ```
 
 ## 🔬 Usage
