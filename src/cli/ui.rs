@@ -5,6 +5,7 @@ use open;
 use serde::{Deserialize, Serialize};
 use std::env;
 
+// UIConfig is a configuration used to start the web ui from the CLI.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UIConfig {
     pub project_dir: String,
@@ -13,6 +14,7 @@ pub struct UIConfig {
     pub browser: bool,
 }
 
+// subcommand defines the CLI args and help for the web ui.
 pub fn subcommand() -> Command<'static> {
     Command::new("ui")
         .about("start the web ui")
@@ -46,8 +48,8 @@ pub fn subcommand() -> Command<'static> {
         )
 }
 
+// parse_config parses the arguments from the CLI and returns a UIConfig.
 fn parse_config(matches: &ArgMatches) -> Result<UIConfig> {
-    // Parse CLI arguments
     let mut project_dir = matches.value_of("projectdir").unwrap();
     let current_dir = env::current_dir().unwrap();
     let current_dir = current_dir.into_os_string().into_string().unwrap();
@@ -68,6 +70,7 @@ fn parse_config(matches: &ArgMatches) -> Result<UIConfig> {
     })
 }
 
+// run executes the web ui.
 pub fn run(matches: &ArgMatches) -> Result<()> {
     let config = parse_config(matches)?;
     match config.port.parse::<i64>() {

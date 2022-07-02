@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
 export const refresh = async () => {
-	const endpoint = `http://localhost:7878/api/sources`;
+	const endpoint = `/api/sources`;
 	try {
 		sources.update((v) => ({
 			...v,

@@ -1,13 +1,14 @@
 use execute::Execute;
 use std::process::{Command, Stdio};
 
+// macro_rules is a macro that helps to display output in cargo build.
 macro_rules! p {
     ($($tokens: tt)*) => {
         println!("cargo:warning={}", format!($($tokens)*))
     }
 }
 
-// Custom build script includes `run npm build` to generate the svelte-kit output.
+// main adds `run npm build` to the cargo build to build the web application.
 fn main() {
     println!("cargo:rerun-if-changed=app/package.json");
     println!("cargo:rerun-if-changed=app/src");

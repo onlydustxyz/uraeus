@@ -26,7 +26,7 @@ export const refresh = async (
 	/** @type {string} */
 	source
 ) => {
-	const endpoint = `http://localhost:7878/api/verify`;
+	const endpoint = `/api/verify`;
 	try {
 		contract.update((v) => ({
 			...v,
