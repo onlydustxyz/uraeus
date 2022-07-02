@@ -102,8 +102,8 @@ async fn sources(data: Data<Mutex<AppConfig>>) -> impl Responder {
     for f in files {
         let d = f.unwrap();
         let s = d.to_str().unwrap().to_string();
-        let suffix = s.split("/").last().unwrap().to_string();
-        let name = suffix.split(".").nth(0).unwrap().to_string();
+        let suffix = s.split('/').last().unwrap().to_string();
+        let name = suffix.split('.').next().unwrap().to_string();
         sources.push(name);
     }
     let serialized = serde_json::to_string(&SourcesOutput { sources }).unwrap();

@@ -62,7 +62,7 @@ fn parse_config(matches: &ArgMatches) -> Result<UIConfig> {
     let browser = matches.is_present("open");
     Ok(UIConfig {
         project_dir: String::from(project_dir),
-        build_dir: String::from(build_dir),
+        build_dir,
         port,
         browser,
     })
@@ -72,7 +72,7 @@ pub fn run(matches: &ArgMatches) -> Result<()> {
     let config = parse_config(matches)?;
     match config.port.parse::<i64>() {
         Ok(n) => {
-            if n < 1025 || n > 65535 {
+            if !(1025..=65535).contains(&n) {
                 println!("port number must be between 1024 and 65535");
                 return Ok(());
             }
