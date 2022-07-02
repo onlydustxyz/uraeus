@@ -1,4 +1,5 @@
 // use crate::cli::compare;
+use actix_cors::Cors;
 use actix_web::{http::header::ContentType, web, App, HttpResponse, HttpServer, Responder};
 use mime_guess::from_path;
 use rust_embed::RustEmbed;
@@ -71,6 +72,8 @@ async fn dist(path: web::Path<String>) -> impl Responder {
 pub async fn service() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
+            // `permissive` is a wide-open development config
+            .wrap(Cors::permissive())
             .service(index)
             .service(verify)
             .service(sources)
