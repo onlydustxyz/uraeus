@@ -4,6 +4,7 @@ use actix_web::{http::header::ContentType, web, App, HttpResponse, HttpServer, R
 use mime_guess::from_path;
 use rust_embed::RustEmbed;
 use serde::{Deserialize, Serialize};
+use std::{thread, time};
 
 #[derive(RustEmbed)]
 #[folder = "app/build/"]
@@ -20,17 +21,25 @@ fn handle_embedded_file(path: &str) -> HttpResponse {
 
 #[actix_web::get("/")]
 async fn index() -> impl Responder {
-    handle_embedded_file("index.js")
+    handle_embedded_file("200.html")
+}
+
+#[actix_web::get("/200")]
+async fn fallback() -> impl Responder {
+    handle_embedded_file("200.html")
 }
 
 #[derive(Deserialize)]
 struct VerifyInput {
     address: String,
+    source: String,
 }
 
 #[derive(Serialize)]
 struct VerifyOutput {
-    success: String,
+    success: bool,
+    address: String,
+    source: String,
 }
 
 #[derive(Serialize)]
@@ -40,12 +49,17 @@ struct SourcesOutput {
 
 #[actix_web::post("/api/verify")]
 async fn verify(query: web::Json<VerifyInput>) -> impl Responder {
+    let three_seconds = time::Duration::from_secs(3);
+    thread::sleep(three_seconds);
+
     let response = &mut VerifyOutput {
-        success: "false".to_string(),
+        success: false,
+        address: query.address.clone(),
+        source: query.source.clone(),
     };
 
     if query.address == "0x0000000000000000000000000000000000000001" {
-        response.success = "true".to_string();
+        response.success = true;
     }
     let serialized = serde_json::to_string(&response).unwrap();
     HttpResponse::Ok()
@@ -55,7 +69,7 @@ async fn verify(query: web::Json<VerifyInput>) -> impl Responder {
 
 #[actix_web::get("/api/sources")]
 async fn sources() -> impl Responder {
-    let sources = vec!["main".to_string()];
+    let sources = vec!["account".to_string(), "main".to_string()];
     let response = &SourcesOutput { sources };
     let serialized = serde_json::to_string(&response).unwrap();
     HttpResponse::Ok()
@@ -75,6 +89,7 @@ pub async fn service() -> std::io::Result<()> {
             // `permissive` is a wide-open development config
             .wrap(Cors::permissive())
             .service(index)
+            .service(fallback)
             .service(verify)
             .service(sources)
             .service(dist)
