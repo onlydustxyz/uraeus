@@ -527,6 +527,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8ba569491c70ec8471e34aa7e9c0b9e82bb5d2464c0398442d17d3c4af814e5a"
 
 [[package]]
+name = "exitcode"
+version = "1.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "de853764b47027c2e862a995c34978ffa63c1501f2e15f987ba11bd4f9bba193"
+
+[[package]]
 name = "firestorm"
 version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1359,6 +1365,7 @@ dependencies = [
  "crossterm",
  "env_logger",
  "execute",
+ "exitcode",
  "log",
  "mime_guess",
  "rust-embed",
