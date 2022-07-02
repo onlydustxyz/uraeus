@@ -68,6 +68,35 @@ uraeus verify 0x0253db1872f5b9ad73ad17461fbbf0e987a23ea05d34c120311301bddb092dc8
 
 ![Example verify](examples/resources/example_verify.png)
 
+### UI
+
+UI provides a UI to verify if a source code matches a deployed contract.
+
+```
+uraeus-ui
+starts the web ui
+
+USAGE:
+    uraeus ui [OPTIONS]
+
+OPTIONS:
+    -b, --builddir <BUILD_DIR>        build directory [default: ]
+    -h, --help                        Print help information
+    -o, --open                        open the browser from the CLI
+    -p, --projectdir <PROJECT_DIR>    project root directory [default: ]
+        --port <PORT>                 change the UI port [default: 7878]
+```
+
+Example:
+
+```bash
+uraeus ui \
+  --projectdir examples/starknet/protostar/gm \
+  --open
+```
+
+![Example ui](examples/resources/example_ui.png)
+
 ## 📗 Logging 
 
 Change log level using `RUST_LOG` environment variable.

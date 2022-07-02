@@ -92,10 +92,6 @@ fn compile(config: &Config) -> Result<CompiledFile> {
     let compiled_contract_file_path =
         format!("{}/{}.json", &config.build_dir, &config.contract_name);
 
-    println!(
-        "you are? {}/{}.json",
-        &config.build_dir, &config.contract_name
-    );
     // Parse compiled contract file
     let compiled_contract_json_str =
         fs::read_to_string(compiled_contract_file_path).map_err(Error::msg)?;

@@ -50,8 +50,7 @@
 {#if $sources.lastError}
 	{$sources.lastError}
 {:else}
-	<h2>Verify</h2>
-	<p>For now, type 0x0000000000000000000000000000000000000001</p>
+	<h2>Verify contract</h2>
 	<select bind:value={selectedSource}>
 		{#each $sources.sources as source}
 			<option value={source}>
@@ -70,9 +69,9 @@
 			{:else if $contract.lastError}
 				{$contract.lastError}
 			{:else if $contract.success}
-				✅ {$contract.address} matches {$contract.source}
+				✅ {$contract.source}.cairo matches the address
 			{:else}
-				❌ {$contract.address} does not match {$contract.source}
+				❌ {$contract.source}.cairo does not match the address
 			{/if}
 		{/if}
 	</p>

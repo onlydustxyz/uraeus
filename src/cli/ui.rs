@@ -15,7 +15,7 @@ pub struct UIConfig {
 
 pub fn subcommand() -> Command<'static> {
     Command::new("ui")
-        .about("run with the web ui")
+        .about("start the web ui")
         .arg(
             arg!(
                 -p --projectdir <PROJECT_DIR> "project root directory"

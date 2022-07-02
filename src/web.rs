@@ -32,12 +32,12 @@ fn handle_embedded_file(path: &str) -> HttpResponse {
 
 #[actix_web::get("/")]
 async fn index() -> impl Responder {
-    handle_embedded_file("200.html")
+    handle_embedded_file("index.html")
 }
 
 #[actix_web::get("/200")]
 async fn fallback() -> impl Responder {
-    handle_embedded_file("200.html")
+    handle_embedded_file("index.html")
 }
 
 #[derive(Deserialize)]
