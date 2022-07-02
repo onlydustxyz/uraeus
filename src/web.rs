@@ -1,15 +1,24 @@
 // use crate::cli::compare;
 use actix_cors::Cors;
-use actix_web::{http::header::ContentType, web, App, HttpResponse, HttpServer, Responder};
-// use actix_web::{http::header::ContentType, web, HttpResponse, Responder};
+use actix_web::{
+    http::header::ContentType,
+    web::{self, Data},
+    App, HttpResponse, HttpServer, Responder,
+};
+use glob::glob;
 use mime_guess::from_path;
 use rust_embed::RustEmbed;
 use serde::{Deserialize, Serialize};
+use std::sync::Mutex;
 use std::{thread, time};
 
 #[derive(RustEmbed)]
 #[folder = "app/build/"]
 struct Asset;
+
+struct AppConfig {
+    project_dir: String,
+}
 
 fn handle_embedded_file(path: &str) -> HttpResponse {
     match Asset::get(path) {
@@ -69,10 +78,19 @@ async fn verify(query: web::Json<VerifyInput>) -> impl Responder {
 }
 
 #[actix_web::get("/api/sources")]
-async fn sources() -> impl Responder {
-    let sources = vec!["account".to_string(), "main".to_string()];
-    let response = &SourcesOutput { sources };
-    let serialized = serde_json::to_string(&response).unwrap();
+async fn sources(data: Data<Mutex<AppConfig>>) -> impl Responder {
+    let local_data = data.lock().unwrap();
+    let mut sources: Vec<String> = vec![];
+    let pattern = format!("{}/src/*.cairo", &local_data.project_dir);
+    let files = glob(&pattern).unwrap();
+    for f in files {
+        let d = f.unwrap();
+        let s = d.to_str().unwrap().to_string();
+        let suffix = s.split("/").last().unwrap().to_string();
+        let name = suffix.split(".").nth(0).unwrap().to_string();
+        sources.push(name);
+    }
+    let serialized = serde_json::to_string(&SourcesOutput { sources }).unwrap();
     HttpResponse::Ok()
         .content_type(ContentType::json())
         .body(serialized)
@@ -86,8 +104,12 @@ async fn dist(path: web::Path<String>) -> impl Responder {
 #[actix_web::main]
 pub async fn service(port: i64, _project_dir: String) -> std::io::Result<()> {
     return HttpServer::new(|| {
+        let data = Data::new(Mutex::new(AppConfig {
+            project_dir: std::string::String::from("examples/starknet/protostar/gm"),
+        }));
         App::new()
             // `permissive` is a wide-open development config
+            .app_data(Data::clone(&data))
             .wrap(Cors::permissive())
             .service(index)
             .service(fallback)
