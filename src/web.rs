@@ -102,10 +102,11 @@ async fn dist(path: web::Path<String>) -> impl Responder {
 }
 
 #[actix_web::main]
-pub async fn service(port: i64, _project_dir: String) -> std::io::Result<()> {
-    return HttpServer::new(|| {
+pub async fn service(port: i64, project_dir: String) -> std::io::Result<()> {
+    return HttpServer::new(move || {
+        let location = project_dir.clone();
         let data = Data::new(Mutex::new(AppConfig {
-            project_dir: std::string::String::from("examples/starknet/protostar/gm"),
+            project_dir: location,
         }));
         App::new()
             // `permissive` is a wide-open development config
