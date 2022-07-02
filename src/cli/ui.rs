@@ -1,6 +1,7 @@
 use crate::web::service;
 use anyhow::Result;
 use clap::{arg, ArgMatches, Command};
+use open;
 use serde::{Deserialize, Serialize};
 use std::env;
 
@@ -8,7 +9,7 @@ use std::env;
 pub struct UIConfig {
     pub project_dir: String,
     pub port: String,
-    pub open: String,
+    pub browser: bool,
 }
 
 pub fn subcommand() -> Command<'static> {
@@ -32,7 +33,7 @@ pub fn subcommand() -> Command<'static> {
             arg!(
                 -o --open "open the browser from the CLI"
             )
-            .default_value("false")
+            .takes_value(false)
             .required(false),
         )
 }
@@ -46,11 +47,11 @@ fn parse_config(matches: &ArgMatches) -> Result<UIConfig> {
         project_dir = &current_dir;
     }
     let port = String::from(matches.value_of("port").unwrap());
-    let open = String::from(matches.value_of("open").unwrap());
+    let browser = matches.is_present("open");
     Ok(UIConfig {
         project_dir: String::from(project_dir),
         port,
-        open,
+        browser,
     })
 }
 
@@ -61,6 +62,9 @@ pub fn run(matches: &ArgMatches) -> Result<()> {
             if n < 1025 || n > 65535 {
                 println!("port number must be between 1024 and 65535");
                 return Ok(());
+            }
+            if config.browser {
+                open::that(format!("http://localhost:{}", n)).unwrap();
             }
             service(n, config.project_dir).unwrap();
         }
