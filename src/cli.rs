@@ -2,7 +2,6 @@ pub mod model;
 pub mod term;
 pub mod ui;
 pub mod verify;
-pub mod web;
 
 use anyhow::Result;
 use clap::Command;

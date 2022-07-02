@@ -1,6 +1,7 @@
 // use crate::cli::compare;
 use actix_cors::Cors;
 use actix_web::{http::header::ContentType, web, App, HttpResponse, HttpServer, Responder};
+// use actix_web::{http::header::ContentType, web, HttpResponse, Responder};
 use mime_guess::from_path;
 use rust_embed::RustEmbed;
 use serde::{Deserialize, Serialize};
@@ -83,8 +84,8 @@ async fn dist(path: web::Path<String>) -> impl Responder {
 }
 
 #[actix_web::main]
-pub async fn service() -> std::io::Result<()> {
-    HttpServer::new(|| {
+pub async fn service(port: i64, _project_dir: String) -> std::io::Result<()> {
+    return HttpServer::new(|| {
         App::new()
             // `permissive` is a wide-open development config
             .wrap(Cors::permissive())
@@ -94,7 +95,7 @@ pub async fn service() -> std::io::Result<()> {
             .service(sources)
             .service(dist)
     })
-    .bind("127.0.0.1:7878")?
+    .bind(format!("127.0.0.1:{}", port))?
     .run()
-    .await
+    .await;
 }
