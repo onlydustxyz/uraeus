@@ -6,7 +6,7 @@ use rust_embed::RustEmbed;
 use serde::{Deserialize, Serialize};
 
 #[derive(RustEmbed)]
-#[folder = "app/.svelte-kit/output/server/"]
+#[folder = "app/build/"]
 struct Asset;
 
 fn handle_embedded_file(path: &str) -> HttpResponse {
