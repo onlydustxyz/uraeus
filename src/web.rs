@@ -1,6 +1,5 @@
 use crate::cli::model::Config;
 use crate::cli::verify;
-// use actix_cors::Cors;
 
 use actix_web::{
     http::header::ContentType,
@@ -138,8 +137,6 @@ pub async fn service(port: i64, project_dir: String, build_dir: String) -> std::
         }));
         App::new()
             .app_data(Data::clone(&data))
-            // `permissive` is a wide-open development config
-            // .wrap(Cors::permissive())
             .service(index)
             .service(verify_api)
             .service(sources)
