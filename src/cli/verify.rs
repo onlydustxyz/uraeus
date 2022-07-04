@@ -97,3 +97,12 @@ fn compile(config: &Config) -> Result<CompiledFile> {
         fs::read_to_string(compiled_contract_file_path).map_err(Error::msg)?;
     Ok(serde_json::from_str(&compiled_contract_json_str)?)
 }
+
+// run_once verifies the contract/source code deployed on the blockchain
+// and returns a boolean so that the caller can use it
+pub fn run_once(config: &Config) -> Result<bool> {
+    let compiled_file = compile(config)?;
+    let deployed_code = starknet::get_code(&config.contract_address)?;
+    let c = compare(&deployed_code, &compiled_file);
+    Ok(c)
+}

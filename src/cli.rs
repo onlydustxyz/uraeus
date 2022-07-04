@@ -1,5 +1,6 @@
 pub mod model;
 pub mod term;
+pub mod ui;
 pub mod verify;
 
 use anyhow::Result;
@@ -15,10 +16,14 @@ pub fn execute() -> Result<()> {
         .author(AUTHORS)
         .about(DESCRIPTION)
         .subcommand(verify::subcommand())
+        .subcommand(ui::subcommand())
         .get_matches();
 
     if let Some(matches) = matches.subcommand_matches("verify") {
         verify::run(matches)?
+    }
+    if let Some(matches) = matches.subcommand_matches("ui") {
+        ui::run(matches)?
     }
     Ok(())
 }
